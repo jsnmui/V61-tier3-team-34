@@ -14,7 +14,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "DashFetch — Turn any Job Description into Interview Questions",
+  title: "DashFetch",
   description:
     "Upload or paste a job description and get AI-generated interview questions tailored to the role.",
 };

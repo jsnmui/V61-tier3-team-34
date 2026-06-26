@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { saveSession } from "@/lib/clientSession";
@@ -138,6 +139,7 @@ export default function HomePage() {
     }
   }
 
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -145,48 +147,51 @@ export default function HomePage() {
       <main className="flex-1">
 
         {/* ── HERO ── */}
-        <section className="bg-gradient-to-br from-navy via-navy-light to-blue py-20 md:py-28 text-white">
-          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+        <section  className="bg-bg-app pt-8 pb-20 md:pt-12 md:pb-28 text-gray-800 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
             <div className="flex-1">
-              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-blue-light bg-white/10 px-3 py-1.5 rounded-full mb-5">
+              
+              <span className="inline-block text-xs font-semibold uppercase tracking-widest bg-badge-bg text-badge-text px-3 py-1.5 rounded-full mb-5">
                 AI-Powered Interview Preparation
               </span>
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-5">
-                Turn any Job Description into{" "}
-                <span className="text-blue-light">Personalized Interview Questions</span>
-              </h1>
-              <p className="text-gray-300 text-lg leading-relaxed mb-8 max-w-xl">
-                Upload or paste a job description and our AI will analyse the role,
-                extract key information, and generate tailored interview questions.
-              </p>
+              
+             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-5 text-navy">
+              <span className="md:whitespace-nowrap">Turn any Job Description</span> <br />
+              into Personalized <br />
+              <span className="bg-gradient-to-r from-grad-start to-grad-end bg-clip-text text-transparent">
+                Interview Questions
+              </span>
+            </h1>
+              
+              <p className="text-desc-text font-medium text-lg leading-loose mb-9 max-w-xl">
+                  Upload or paste a job description and our AI will analyse the role,
+                  extract key information, and generate tailored interview questions.
+                </p>
+              
               <div className="flex flex-wrap gap-4 text-sm font-medium">
                 {["Save Time", "Practice Smarter", "Boost Confidence"].map((pill) => (
-                  <span key={pill} className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2">
-                    <span className="text-green-400">✓</span> {pill}
+                  <span key={pill} className="flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-2 text-gray-700">
+                    <span className="text-badge-text font-bold">✓</span> {pill}
                   </span>
                 ))}
               </div>
             </div>
-
-            {/* Hero illustration */}
-            <div className="flex-shrink-0 w-72 h-72 md:w-80 md:h-80 relative">
-              <div className="absolute inset-0 bg-blue/20 rounded-3xl blur-3xl" />
-              <div className="relative bg-white/10 backdrop-blur rounded-3xl p-8 flex flex-col gap-4 border border-white/20">
-                {["Job Title: Senior Developer","Skills: React, Node.js","Experience: 5+ years"].map((line) => (
-                  <div key={line} className="h-3 bg-white/20 rounded-full text-xs text-white/60 flex items-center px-3 text-[11px]">
-                    {line}
-                  </div>
-                ))}
-                <div className="mt-2 bg-blue/40 rounded-xl p-3 text-xs text-white/90 leading-relaxed">
-                  ✨ Generating 10 tailored interview questions…
-                </div>
-              </div>
+            
+           {/* Hero illustration */}
+            <div className="flex-shrink-0 w-full md:w-[550px] h-[450px] relative">
+              <Image 
+                src="/home.png" 
+                alt="DashFetch Hero Illustration"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
           </div>
         </section>
 
         {/* ── INPUT SECTION ── */}
-        <section className="py-14 bg-gray-50">
+        <section className="pt-0 pb-14 bg-gray-50 -mt-10 md:-mt-14">
           <div className="max-w-5xl mx-auto px-6">
             <form onSubmit={handleSubmit}>
               <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
@@ -236,7 +241,16 @@ export default function HomePage() {
                       }`}
                     >
                       <input id="file-input" type="file" accept=".txt,.pdf,.docx" onChange={(e) => validateAndSetFile(e.target.files?.[0])} className="sr-only" />
-                      <div className="w-12 h-12 rounded-full bg-blue/10 flex items-center justify-center text-2xl">📁</div>
+                      <div className="w-14 h-14 relative flex items-center justify-center mb-1">
+                    <Image 
+                      src="/upload-cloud.png" 
+                      alt="Upload Icon"
+                      width={56}              
+                      height={56}
+                      className="object-contain"
+                    />
+                  </div>
+
                       {file ? (
                         <span className="text-sm font-medium text-blue">{file.name}</span>
                       ) : (
@@ -284,7 +298,7 @@ export default function HomePage() {
                     <span className="text-sm font-bold text-blue w-6 text-center">{quantity}</span>
                   </div>
 
-                  <button
+                 <button
                     type="submit"
                     disabled={isLoading}
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue px-7 py-3 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-md shadow-blue/20"
@@ -295,7 +309,16 @@ export default function HomePage() {
                         Analysing…
                       </>
                     ) : (
-                      <>⚡ Generate Questions</>
+                      <div className="flex items-center gap-2">
+                        <Image 
+                          src="/Button-image.png" 
+                          alt="Button Icon"
+                          width={16} 
+                          height={16}
+                          className="object-contain"
+                        />
+                        <span>Generate Questions</span>
+                      </div>
                     )}
                   </button>
                 </div>

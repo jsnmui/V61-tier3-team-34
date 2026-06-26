@@ -1,8 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --color-navy: #0f1f3d;
-  --color-navy-light: #1a3160;
+  --color-navy: #131E49; 
   --color-blue: #2563eb;
   --color-blue-light: #3b82f6;
   --color-blue-pale: #eff6ff;
@@ -17,11 +16,17 @@
   --color-success: #10b981;
   --color-error: #ef4444;
   --color-warning: #f59e0b;
+  --color-background-app: #F9F9F9; 
+
+  --color-badge-bg: rgba(85, 138, 255, 0.15); 
+  --color-badge-text: #558AFF;               
+  --color-grad-start: #0050FF;               
+  --color-grad-end: #5E00FF;                 
+  --color-desc-text: #606060;               
 }
 
 @theme inline {
   --color-navy: var(--color-navy);
-  --color-navy-light: var(--color-navy-light);
   --color-blue: var(--color-blue);
   --color-blue-light: var(--color-blue-light);
   --color-blue-pale: var(--color-blue-pale);
@@ -36,12 +41,19 @@
   --color-error: var(--color-error);
   --font-display: var(--font-plus-jakarta);
   --font-sans: var(--font-inter);
+  
+  --color-bg-app: var(--color-background-app);
+  --color-badge-bg: var(--color-badge-bg);
+  --color-badge-text: var(--color-badge-text);
+  --color-grad-start: var(--color-grad-start);
+  --color-grad-end: var(--color-grad-end);
+  --color-desc-text: var(--color-desc-text);
 }
 
 * { box-sizing: border-box; }
 
 body {
-  background: var(--color-white);
+  background: var(--color-background-app); 
   color: var(--color-gray-800);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }

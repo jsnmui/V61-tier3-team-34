@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from 'next/image';
 import { useState } from "react";
 
 export default function Navbar() {
@@ -9,8 +10,15 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 focus-ring rounded">
-          <span className="text-blue font-display font-bold text-xl tracking-tight">
-            ⚡ DashFetch
+        <Image 
+          src="/logo.DashFetch.png" 
+          alt="Logo Ícone"
+          width={24}               
+          height={24}
+          className="object-contain"
+        />
+        <span className="text-[#131E49] font-display font-bold text-xl tracking-tight">
+            DashFetch
           </span>
         </Link>
 
