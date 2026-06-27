@@ -24,26 +24,95 @@ function WordCounter({ count }) {
 }
 
 const TEAM = [
-  { name: "Roger", role: "Scrum Master", initials: "RO", color: "#6366f1" },
-  { name: "Thanasis", role: "Web Developer", initials: "TH", color: "#2563eb" },
-  { name: "Jason", role: "Web Developer", initials: "JA", color: "#0891b2" },
-  { name: "Vanessa", role: "Web Developer", initials: "VA", color: "#7c3aed" },
-  { name: "Simbongile", role: "Web Developer", initials: "SI", color: "#059669" },
-  { name: "Val", role: "Technical Guide", initials: "VA", color: "#d97706" },
+  {
+    name: "Roger",
+    role: "Scrum Master",
+    image: "/picture-profile.png", 
+    github: "https://github.com/",
+    linkedin: "https://linkedin.com/"
+  },
+  {
+    name: "Val Lysenko",
+    role: "Technical Guide",
+    image: "/picture-val.jpg", 
+    github: "https://github.com/Valeriusdev",
+    linkedin: "https://www.linkedin.com/in/valeriylysenko/"
+  },
+  {
+    name: "Vanessa Santos",
+    role: "Web Develope",
+    image: "/picture-vanessa.jpg", 
+    github: "https://github.com/nessa-dev",
+    linkedin: "https://www.linkedin.com/in/vanessa-dev-santos/"
+  },
+  {
+    name: "Simbongile Mkhotheli",
+    role: "Web Developer",
+    image: "/picture-simbongile.png", 
+    github: "https://github.com/simbongile-mkhotheli",
+    linkedin: "https://www.linkedin.com/in/mkoteli/"
+  },
+  {
+    name: "Thanasis Koufos",
+    role: "Web Developer",
+    image: "/picture-profile.png", 
+    github: "https://github.com/ThanasisSoftwareDeveloper",
+    linkedin: "https://www.linkedin.com/in/thanasis-koufos-software-developer/"
+  },
+  {
+    name: "Jason",
+    role: "Web Developer",
+    image: "/picture-profile.png", 
+    github: "https://github.com/",
+    linkedin: "https://linkedin.com/"
+  }
 ];
 
 const HOW_IT_WORKS = [
-  { icon: "📋", step: "1", title: "Input Your Job Description", desc: "Paste the text or upload a TXT, PDF or DOCX file from any job listing." },
-  { icon: "🤖", step: "2", title: "AI Analyses the Role", desc: "Our AI extracts key skills, responsibilities and requirements automatically." },
-  { icon: "🎯", step: "3", title: "Practice with Personalised Questions", desc: "Get tailored technical, behavioural and experience-based interview questions." },
+  {
+    step: 1,
+    title: "Upload Your Job Description",
+    desc: "Paste the text or ipload a TXT/PDF file of the job description.",
+    icon: "/icon-doc-home.png",      
+  },
+  {
+    step: 2,
+    title: "AI Analyzes the Role",
+    desc: "Our AI extracts key skills, experience, responsibilities and requirements.",
+    icon: "/icon-AI-home.png",       
+  },
+  {
+    step: 3,
+    title: "Practice with Questions",
+    desc: "Get technical, behavioral and experience-based interview questions.",
+    icon: "/icon-mensage-home.png",  
+  },
 ];
 
 const WHY_FEATURES = [
-  { icon: "⚡", title: "Save Hours", desc: "No more searching for generic questions. Everything is tailored to your specific role." },
-  { icon: "🎯", title: "Role-Specific Questions", desc: "Questions are generated directly from the actual job requirements." },
-  { icon: "🤖", title: "Powered by AI", desc: "Leverages advanced AI to understand context and requirements with precision." },
-  { icon: "📈", title: "Boost Your Confidence", desc: "Walk into interviews knowing exactly what they are likely to ask." },
+  { 
+    icon: "/icon-ray-home.png", 
+    title: "Save Hours", 
+    desc: "No more searching for generic questions. Everything is tailored to your specific role." 
+  },
+  { 
+    icon: "/icon-focus-home.png", 
+    title: "Role-Specific Questions", 
+    desc: "Questions are generated directly from the actual job requirements." 
+  },
+  { 
+    icon: "/icon-robot-home.png", 
+    title: "Powered by AI", 
+    desc: "Leverages advanced AI to understand context and requirements with precision." 
+  },
+  { 
+    icon: "/icon-progress-home.png", // Seu arquivo na pasta public
+    title: "Boost Your Confidence", 
+    desc: "Walk into interviews knowing exactly what they are likely to ask." 
+  },
 ];
+
+
 
 export default function HomePage() {
   const router = useRouter();
@@ -78,7 +147,7 @@ export default function HomePage() {
       const text = await candidate.text();
       setFileWordCount(countWords(text));
     } else {
-      setFileWordCount(0); // unknown until parsed
+      setFileWordCount(0); 
     }
   }, []);
 
@@ -331,92 +400,238 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── FEATURES ── */}
-        <section className="py-16 bg-white">
-          <div className="max-w-5xl mx-auto px-6 grid md:grid-cols-3 gap-6">
-            {[
-              { icon: "🧠", title: "AI-Powered Analysis", desc: "Analyses skills, requirements and responsibilities from any job description automatically." },
-              { icon: "❓", title: "Personalised Questions", desc: "Generates technical, behavioural and experience-based questions tailored to the role." },
-              { icon: "🎤", title: "Mock Interview Ready", desc: "Practice with one question at a time, reveal sample answers and get STAR method tips." },
-            ].map((f) => (
-              <div key={f.title} className="rounded-2xl border border-gray-100 bg-gray-50 p-6">
-                <div className="text-3xl mb-4">{f.icon}</div>
-                <h3 className="font-display font-semibold text-gray-800 mb-2">{f.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{f.desc}</p>
+     {/* ── FEATURES ── */}
+    <section className="py-16 bg-white">
+      <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    {[
+      { 
+        icon: (
+          <svg className="w-8 h-8 text-[#6366F1]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+        ), 
+        title: "Ai-Powered Analysis", 
+        desc: "Extracts skills, requirements and key responsibilities." 
+      },
+      { 
+        icon: (
+          <svg className="w-8 h-8 text-[#6366F1]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        ), 
+        title: "Personalized Questions", 
+        desc: "Generates technical, behavioral and experience-based questions." 
+      },
+      { 
+        icon: (
+          <svg className="w-8 h-8 text-[#6366F1]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+        ), 
+        title: "Mock Interview Ready", 
+        desc: "Practice with AI-powered mock interviews." 
+      },
+    ].map((f) => (
+      <div key={f.title} className="flex items-start gap-4">
+        <div className="w-16 h-16 rounded-full bg-[#EEF2FF] flex items-center justify-center shrink-0">
+          {f.icon}
+        </div>
+        <div className="pt-1"> 
+          <h3 className="text-sm font-bold text-slate-800 mb-1">{f.title}</h3>
+          <p className="text-xs text-slate-500 leading-relaxed">{f.desc}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+{/* ── HOW IT WORKS ── */}
+<section className="py-16 bg-gray-50">
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="font-display text-3xl font-bold text-center text-gray-800 mb-16">
+      How DashFetch Works
+    </h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start relative">
+      <div className="hidden md:flex absolute top-8 left-[20%] w-[12%] items-center z-10">
+        <div className="flex-1 border-t-2 border-dashed border-arrow-blue"></div>
+        <div className="w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-l-[8px] border-l-arrow-blue -ml-1"></div>
+      </div>
+
+      <div className="hidden md:flex absolute top-8 left-[54%] w-[12%] items-center z-10">
+        <div className="flex-1 border-t-2 border-dashed border-arrow-blue"></div>
+        <div className="w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-l-[8px] border-l-arrow-blue -ml-1"></div>
+      </div>
+
+      {HOW_IT_WORKS.map((step, i) => (
+        <div key={i} className="flex flex-col items-center md:items-start text-center md:text-left px-4">
+          <div className="flex items-center justify-center gap-3 mb-6 relative">
+            <div className="w-8 h-8 rounded-full bg-step-purple text-white flex items-center justify-center text-sm font-bold shrink-0 z-20">
+              {i + 1}
+            </div>
+            
+            <div className="w-16 h-16 rounded-xl bg-icon-box-bg flex items-center justify-center shrink-0 overflow-hidden relative z-20">
+              <Image 
+                src={step.icon} 
+                alt=""
+                width={32}      
+                height={32}
+                className="object-contain w-8 h-8"
+              />
+            </div>
+          </div>
+          <h3 className="font-display font-semibold text-gray-800 mb-2 max-w-[220px]">
+            {step.title}
+          </h3>
+          <p className="text-sm text-desc-text leading-relaxed max-w-[260px]">
+            {step.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+ {/* ── WHY DASHFETCH ── */}
+<section className="py-16 bg-white">
+  <div className="max-w-7xl mx-auto px-6">
+    <h2 className="font-display text-3xl font-bold text-center text-gray-800 mb-12">
+      Why choose DashFetch?
+    </h2>
+    
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {WHY_FEATURES.map((f) => (
+        <div 
+          key={f.title} 
+          className="bg-white border border-gray-200 rounded-2xl p-6 flex items-center gap-4 shadow-xs"
+        >
+          <div className="w-16 h-16 flex items-center justify-center shrink-0 relative">
+            <Image 
+              src={f.icon} 
+              alt=""
+              width={56} 
+              height={56}
+              className="object-contain"
+            />
+          </div>
+          <div className="flex flex-col justify-center">
+            <h3 className="font-sans font-bold text-gray-800 text-sm mb-1">
+              {f.title}
+            </h3>
+            <p className="text-[11px] text-gray-500 leading-normal max-w-[180px]">
+              {f.desc}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+
+{/* ── MEET THE TEAM ── */}
+<section className="pt-4 pb-16 bg-white overflow-hidden" id="about">
+    <div className="max-w-7xl mx-auto px-6">
+    
+    {/* Title and Purple Decorative Line */}
+    <div className="flex flex-col items-center justify-center mb-2">
+      <h2 className="font-display text-3xl font-bold text-center text-gray-800">
+        Meet our Team
+      </h2>
+      <div className="w-10 h-1 bg-gradient-to-r from-grad-start to-grad-end rounded-full mt-2"></div>
+    </div>
+    
+    <p className="text-center text-gray-500 text-sm mb-8">
+      Chingu Voyage V61 · Tier 3 · Team 34
+    </p>
+
+   {/* CAROUSEL AND CONTROL BUTTONS */}
+    <div className="relative w-full">
+      
+      {/* Scroll Container */}
+      <div 
+        className="w-full overflow-x-auto pb-6 pt-1 scroll-smooth select-none scrollbar-none"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <div className="flex flex-row gap-5 w-max px-2">
+          {TEAM.map((member, i) => (
+            <div 
+              key={member.name + i} 
+              className="w-[290px] bg-white border border-gray-200 rounded-2xl p-5 flex items-center gap-4 shadow-xs hover:shadow-md transition-shadow duration-300 shrink-0"
+            >
+              <div className="w-20 h-20 rounded-full border border-gray-100 overflow-hidden shrink-0 relative bg-gray-50">
+                <Image 
+                  src={member.image} 
+                  alt={member.name}
+                  fill
+                  sizes="80px"
+                  className="object-cover"
+                />
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── HOW IT WORKS ── */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-5xl mx-auto px-6">
-            <h2 className="font-display text-3xl font-bold text-center text-gray-800 mb-12">
-              How DashFetch Works
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {HOW_IT_WORKS.map((step, i) => (
-                <div key={step.step} className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-blue flex items-center justify-center text-2xl mb-4 shadow-lg shadow-blue/20">
-                    {step.icon}
-                  </div>
-                  {i < HOW_IT_WORKS.length - 1 && (
-                    <div className="hidden md:block absolute translate-x-40 translate-y-[-2.5rem] text-gray-300 text-2xl">→</div>
-                  )}
-                  <h3 className="font-display font-semibold text-gray-800 mb-2">{step.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{step.desc}</p>
+                 <div className="flex flex-col justify-between h-full py-1">
+                <div>
+                  <h3 className="font-sans font-bold text-gray-800 text-base leading-tight">
+                    {member.name}
+                  </h3>
+                  <p className="text-xs text-badge-text font-medium mt-0.5">
+                    {member.role}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── WHY DASHFETCH ── */}
-        <section className="py-16 bg-white">
-          <div className="max-w-5xl mx-auto px-6">
-            <h2 className="font-display text-3xl font-bold text-center text-gray-800 mb-12">
-              Why choose DashFetch?
-            </h2>
-            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
-              {WHY_FEATURES.map((f) => (
-                <div key={f.title} className="rounded-2xl bg-blue-pale border border-blue/10 p-5">
-                  <div className="text-2xl mb-3">{f.icon}</div>
-                  <h3 className="font-display font-semibold text-gray-800 text-sm mb-1.5">{f.title}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{f.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── MEET THE TEAM ── */}
-        <section className="py-16 bg-gray-50" id="about">
-          <div className="max-w-5xl mx-auto px-6">
-            <h2 className="font-display text-3xl font-bold text-center text-gray-800 mb-2">
-              Meet our Team
-            </h2>
-            <p className="text-center text-gray-500 text-sm mb-10">Chingu Voyage V61 · Tier 3 · Team 34</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-5">
-              {TEAM.map((member) => (
-                <div key={member.name} className="flex flex-col items-center text-center gap-2">
-                  <div
-                    className="w-16 h-16 rounded-full flex items-center justify-center text-white font-display font-bold text-lg shadow-md"
-                    style={{ backgroundColor: member.color }}
+                  <div className="flex items-center gap-3 mt-3">
+                  <a 
+                    href={member.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-[10px] text-gray-500 font-medium hover:text-gray-900 transition-colors"
                   >
-                    {member.initials}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm text-gray-800">{member.name}</p>
-                    <p className="text-xs text-gray-500">{member.role}</p>
-                  </div>
+                    <svg className="w-4 h-4 text-gray-800" fill="currentColor" viewBox="0 0 24 24">
+                      <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.164 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                    </svg>
+                    <span>GitHub</span>
+                  </a>
+                  
+                  <a 
+                    href={member.linkedin} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-[10px] text-gray-500 font-medium hover:text-blue-600 transition-colors"
+                  >
+                    <svg className="w-4 h-4 text-[#0077B5]" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                    <span>LinkedIn</span>
+                  </a>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
+      </div>
+
+     {/* Button */}
+    <button 
+      onClick={() => {
+        const container = document.querySelector('.overflow-x-auto');
+        if (container) {
+          const isAtEnd = container.scrollLeft + container.clientWidth >= container.scrollWidth - 10;
+          if (isAtEnd) {
+            container.scrollTo({ left: 0, behavior: 'smooth' }); // Volta pro início
+          } else {
+            container.scrollBy({ left: 310, behavior: 'smooth' }); // Avança 1 card
+          }
+        }
+      }}
+      className="absolute right-0 top-1/2 -translate-y-10 translate-x-14 bg-white border border-gray-200 text-gray-700 hover:text-blue-600 w-12 h-12 rounded-full flex items-center justify-center shadow-md hover:scale-105 transition-all z-30 cursor-pointer"
+      aria-label="Next slide"
+    >
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+        </div>
+      </div>
+    </section>
 
       </main>
-
       <Footer />
     </div>
   );
