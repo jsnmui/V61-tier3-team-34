@@ -55,7 +55,7 @@ const TEAM = [
   {
     name: "Thanasis Koufos",
     role: "Web Developer",
-    image: "/picture-profile.png", 
+    image: "/picture-thanasis.png",  // γραμμή 58 - Thanasis 
     github: "https://github.com/ThanasisSoftwareDeveloper",
     linkedin: "https://www.linkedin.com/in/thanasis-koufos-software-developer/"
   },
