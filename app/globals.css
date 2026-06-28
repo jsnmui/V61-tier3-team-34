@@ -22,7 +22,12 @@
   --color-badge-text: #558AFF;               
   --color-grad-start: #0050FF;               
   --color-grad-end: #5E00FF;                 
-  --color-desc-text: #606060;               
+  --color-desc-text: #606060;   
+  
+  --color-step-purple: #7c3aed;     
+  --color-arrow-blue: #2563eb;      
+  --color-icon-box-bg: #e0e7ff;     
+  --color-icon-blue: #0050ff;
 }
 
 @theme inline {
@@ -48,6 +53,11 @@
   --color-grad-start: var(--color-grad-start);
   --color-grad-end: var(--color-grad-end);
   --color-desc-text: var(--color-desc-text);
+
+  --color-step-purple: var(--color-step-purple);
+  --color-arrow-blue: var(--color-arrow-blue);
+  --color-icon-box-bg: var(--color-icon-box-bg);
+  --color-icon-blue: var(--color-icon-blue);
 }
 
 * { box-sizing: border-box; }
