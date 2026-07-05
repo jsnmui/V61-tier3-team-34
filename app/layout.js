@@ -17,6 +17,9 @@ export const metadata = {
   title: "DashFetch",
   description:
     "Upload or paste a job description and get AI-generated interview questions tailored to the role.",
+  icons: {
+    icon: "/logo.DashFetch.png", 
+  },
 };
 
 export default function RootLayout({ children }) {
