@@ -35,7 +35,7 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold text-sm uppercase tracking-widest text-gray-400 mb-4">Quick Links</h3>
           <ul className="space-y-2 text-sm text-gray-300">
-            <li><Link href="/#faq" className="hover:text-white transition-colors focus-ring rounded">FAQ</Link></li>
+            <li><Link href="/faq" className="hover:text-white transition-colors focus-ring rounded">FAQ</Link></li>
             <li><Link href="/#contact" className="hover:text-white transition-colors focus-ring rounded">Contact</Link></li>
             <li><Link href="/#about" className="hover:text-white transition-colors focus-ring rounded">About</Link></li>
           </ul>
