@@ -106,7 +106,7 @@ const WHY_FEATURES = [
     desc: "Leverages advanced AI to understand context and requirements with precision." 
   },
   { 
-    icon: "/icon-progress-home.png", // Seu arquivo na pasta public
+    icon: "/icon-progress-home.png", 
     title: "Boost Your Confidence", 
     desc: "Walk into interviews knowing exactly what they are likely to ask." 
   },
