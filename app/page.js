@@ -215,49 +215,52 @@ export default function HomePage() {
 
       <main className="flex-1">
 
-        {/* ── HERO ── */}
-        <section  className="bg-bg-app pt-8 pb-20 md:pt-12 md:pb-28 text-gray-800 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-            <div className="flex-1">
-              
-              <span className="inline-block text-xs font-semibold uppercase tracking-widest bg-badge-bg text-badge-text px-3 py-1.5 rounded-full mb-5">
-                AI-Powered Interview Preparation
+       {/* ── HERO ── */}
+      <section className="bg-bg-app pt-8 pb-20 md:pt-12 md:pb-28 text-gray-800 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1">
+          
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest bg-badge-bg text-badge-text px-3 py-1.5 rounded-full mb-5">
+            AI-Powered Interview Preparation
+          </span>
+          
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-5 text-navy">
+            <span className="md:whitespace-nowrap">Turn any Job Description</span> <br />
+            into Personalized <br />
+            <span className="bg-gradient-to-r from-grad-start to-grad-end bg-clip-text text-transparent">
+              Interview Questions
+            </span>
+          </h1>
+          
+          <p className="text-desc-text font-medium text-lg leading-loose mb-9 max-w-xl">
+            Upload or paste a job description and our AI will analyse the role,
+            extract key information, and generate tailored interview questions.
+          </p>
+        
+         <div className="flex flex-wrap gap-6 text-sm font-semibold text-gray-700">
+            {["Save Time", "Practice Smarter", "Boost Confidence"].map((pill) => (
+              <span key={pill} className="flex items-center gap-3 select-none">
+                <span className="w-5 h-5 rounded-full bg-[#8B5CF6] flex items-center justify-center shrink-0">
+                  <span className="block w-1.5 h-2.5 border-r-2 border-b-2 border-white rotate-45 -mt-0.5" />
+                </span>
+                {pill}
               </span>
-              
-             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-5 text-navy">
-              <span className="md:whitespace-nowrap">Turn any Job Description</span> <br />
-              into Personalized <br />
-              <span className="bg-gradient-to-r from-grad-start to-grad-end bg-clip-text text-transparent">
-                Interview Questions
-              </span>
-            </h1>
-              
-              <p className="text-desc-text font-medium text-lg leading-loose mb-9 max-w-xl">
-                  Upload or paste a job description and our AI will analyse the role,
-                  extract key information, and generate tailored interview questions.
-                </p>
-              
-              <div className="flex flex-wrap gap-4 text-sm font-medium">
-                {["Save Time", "Practice Smarter", "Boost Confidence"].map((pill) => (
-                  <span key={pill} className="flex items-center gap-2 bg-white border border-gray-200 shadow-sm rounded-full px-4 py-2 text-gray-700">
-                    <span className="text-badge-text font-bold">✓</span> {pill}
-                  </span>
-                ))}
-              </div>
-            </div>
-            
-           {/* Hero illustration */}
-            <div className="flex-shrink-0 w-full md:w-[550px] h-[450px] relative">
-              <Image 
-                src="/home.png" 
-                alt="DashFetch Hero Illustration"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
+            ))}
           </div>
-        </section>
+        </div>
+        
+      {/* Hero illustration */}
+    <div className="flex-shrink-0 w-full md:w-[550px] h-[450px] relative">
+      <Image 
+        src="/home.png" 
+        alt="DashFetch Hero Illustration"
+        fill
+        className="object-contain"
+        priority
+      />
+    </div>
+  </div>
+</section>
 
         {/* ── INPUT SECTION ── */}
         <section className="pt-0 pb-14 bg-gray-50 -mt-10 md:-mt-14">

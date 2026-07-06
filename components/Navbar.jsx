@@ -24,7 +24,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-          <Link href="/faq" className="hover:text-purple-600 transition-colors focus-ring rounded">FAQ</Link>
+          <Link href="/faq" className="hover:text-blue transition-colors focus-ring rounded">FAQ</Link>
           <Link href="/#contact" className="hover:text-blue transition-colors focus-ring rounded">Contact</Link>
           <Link href="/#about" className="hover:text-blue transition-colors focus-ring rounded">About</Link>
         </nav>
