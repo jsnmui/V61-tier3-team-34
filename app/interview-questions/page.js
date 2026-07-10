@@ -70,7 +70,7 @@ export default function InterviewQuestionsPage() {
     return (
       <div className="flex flex-col min-h-screen md:flex-row">
         <Sidebar />
-        <main className="flex-1 flex items-center justify-center px-6 py-16">
+        <main id="main-content" className="flex-1 flex items-center justify-center px-6 py-16">
           <div className="text-center max-w-sm">
             <h1 className="font-display text-2xl font-semibold text-ink mb-3">
               No job description analyzed yet
@@ -93,7 +93,7 @@ export default function InterviewQuestionsPage() {
     <div className="flex flex-col min-h-screen md:flex-row">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <main className="flex-1">
+        <main id="main-content" className="flex-1">
           <div className="max-w-4xl mx-auto px-6 py-10 md:py-14">
             <h1 className="font-display text-3xl font-semibold text-ink mb-1">
               Interview Questions

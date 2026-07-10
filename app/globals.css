@@ -28,6 +28,11 @@
   --color-arrow-blue: #2563eb;      
   --color-icon-box-bg: #e0e7ff;     
   --color-icon-blue: #0050ff;
+  --color-ink: var(--color-gray-800);
+  --color-paper: var(--color-white);
+  --color-paper-alt: var(--color-gray-50);
+  --color-line: var(--color-gray-200);
+  --color-amber: var(--color-warning);
 }
 
 @theme inline {
@@ -44,6 +49,7 @@
   --color-gray-800: var(--color-gray-800);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
+  --color-warning: var(--color-warning);
   --font-display: var(--font-plus-jakarta);
   --font-sans: var(--font-inter);
   
@@ -58,6 +64,11 @@
   --color-arrow-blue: var(--color-arrow-blue);
   --color-icon-box-bg: var(--color-icon-box-bg);
   --color-icon-blue: var(--color-icon-blue);
+  --color-ink: var(--color-ink);
+  --color-paper: var(--color-paper);
+  --color-paper-alt: var(--color-paper-alt);
+  --color-line: var(--color-line);
+  --color-amber: var(--color-amber);
 }
 
 * { box-sizing: border-box; }

@@ -12,7 +12,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-2 focus-ring rounded">
         <Image 
           src="/logo.DashFetch.png" 
-          alt="Logo Ícone"
+          alt="DashFetch Logo"
           width={24}               
           height={24}
           className="object-contain"
