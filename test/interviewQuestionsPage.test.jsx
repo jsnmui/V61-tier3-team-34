@@ -49,7 +49,6 @@ describe("InterviewQuestionsPage", () => {
     render(<InterviewQuestionsPage />);
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
-
     const [, options] = global.fetch.mock.calls[0];
     expect(JSON.parse(options.body)).toMatchObject({
       sessionId: "session-1",
@@ -71,10 +70,10 @@ describe("InterviewQuestionsPage", () => {
     });
 
     render(<InterviewQuestionsPage />);
+
     fireEvent.click(screen.getByRole("button", { name: "Generate New Questions" }));
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
-
     const [, options] = global.fetch.mock.calls[0];
     expect(JSON.parse(options.body)).toMatchObject({
       sessionId: "session-2",

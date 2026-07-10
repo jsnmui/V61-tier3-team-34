@@ -44,7 +44,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       {menuOpen && (
         <nav className="md:hidden border-t border-gray-100 bg-white px-6 py-4 flex flex-col gap-4 text-sm font-medium text-gray-600">
-          <Link href="/#faq" onClick={() => setMenuOpen(false)} className="hover:text-blue">FAQ</Link>
+          <Link href="/faq" onClick={() => setMenuOpen(false)} className="hover:text-blue">FAQ</Link>
           <Link href="/#contact" onClick={() => setMenuOpen(false)} className="hover:text-blue">Contact</Link>
           <Link href="/#about" onClick={() => setMenuOpen(false)} className="hover:text-blue">About</Link>
         </nav>

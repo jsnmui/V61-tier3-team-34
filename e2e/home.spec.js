@@ -6,8 +6,8 @@ test("shows the landing hero and primary CTA", async ({ page }) => {
     "AI-Powered Interview Preparation",
   );
   await expect(
-    page.getByRole("heading", { name: /Turn any Job Description/i }),
-  ).toBeVisible();
+    page.getByRole("heading", { level: 1 }),
+  ).toContainText(/Turn any Job Description/i);
   await expect(
     page.getByRole("navigation").getByRole("link", { name: /FAQ/i }),
   ).toBeVisible();

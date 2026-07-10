@@ -19,7 +19,7 @@ module.exports = defineConfig({
   webServer: {
     command: `npm run dev -- --hostname 127.0.0.1 --port ${DEV_PORT}`,
     url: BASE_URL,
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
 });

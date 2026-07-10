@@ -162,3 +162,29 @@ Tests should validate:
 - response shape
 
 NOT internal implementation details.
+
+---
+
+## End-to-End (E2E) Testing
+
+DashFetch uses **Playwright** for end-to-end testing to ensure core user flows work correctly in the browser.
+
+### Run all E2E tests
+
+```bash
+npm run test:e2e
+```
+
+### Configuration
+
+E2E tests are configured in `playwright.config.js`. The setup:
+- Starts the local development server automatically if it's not already running.
+- Uses a 120-second timeout for the server to start (useful for cold starts).
+- Records traces on the first retry of a failing test.
+
+### Writing E2E tests
+
+- Place E2E tests in the `e2e/` directory with a `.spec.js` extension.
+- Focus on critical paths: landing page, analysis flow, and navigation.
+- Use locators that are resilient to UI changes (e.g., `role`, `text`).
+- Mock API responses where possible to keep tests fast and deterministic (see `e2e/home.spec.js` for examples using `page.route()`).
