@@ -27,9 +27,9 @@ const TEAM = [
   {
     name: "Roger",
     role: "Scrum Master",
-    image: "/picture-profile.png", 
-    github: "https://github.com/",
-    linkedin: "https://linkedin.com/"
+    image: "/picture-roger.png", 
+    github: "https://github.com/RBanner",
+    linkedin: "https://www.linkedin.com/in/roger-banner/"
   },
   {
     name: "Val Lysenko",
@@ -62,7 +62,7 @@ const TEAM = [
   {
     name: "Jason",
     role: "Web Developer",
-    image: "/picture-profile.png", 
+    image: "/picture-default.png", 
     github: "https://github.com/",
     linkedin: "https://linkedin.com/"
   }
