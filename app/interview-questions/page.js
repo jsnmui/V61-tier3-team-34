@@ -102,12 +102,30 @@ export default function InterviewQuestionsPage() {
               Personalized questions based on your job description
             </p>
 
-            <div role="tablist" aria-label="Question category" className="flex gap-2 mb-6 overflow-x-auto">
+            <div 
+              role="tablist" 
+              aria-label="Question category" 
+              className="flex gap-2 mb-6 overflow-x-auto p-1"
+              onKeyDown={(e) => {
+                const tabs = CATEGORIES.map(cat => cat.key);
+                const currentIndex = tabs.indexOf(activeCategory);
+                if (e.key === "ArrowRight") {
+                  const nextIndex = (currentIndex + 1) % tabs.length;
+                  setActiveCategory(tabs[nextIndex]);
+                  e.currentTarget.querySelectorAll('button')[nextIndex].focus();
+                } else if (e.key === "ArrowLeft") {
+                  const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                  setActiveCategory(tabs[prevIndex]);
+                  e.currentTarget.querySelectorAll('button')[prevIndex].focus();
+                }
+              }}
+            >
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat.key}
                   role="tab"
                   aria-selected={activeCategory === cat.key}
+                  tabIndex={activeCategory === cat.key ? 0 : -1}
                   onClick={() => setActiveCategory(cat.key)}
                   className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors focus-ring ${
                     activeCategory === cat.key
@@ -121,13 +139,23 @@ export default function InterviewQuestionsPage() {
             </div>
 
             {error && (
-              <p role="alert" className="mb-4 text-sm text-error">
+              <p role="alert" className="mb-4 text-sm text-error font-medium bg-red-50 p-2 rounded-lg border border-red-100 flex items-center gap-2">
+                 <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
                 {error}
               </p>
             )}
 
+            <div aria-live="polite" className="sr-only">
+              {isGenerating ? "Generating your questions, please wait..." : (questionList.length > 0 ? `Loaded ${questionList.length} questions.` : "")}
+            </div>
+
             {isGenerating ? (
-              <p className="text-sm text-ink/60">Generating your questions…</p>
+              <p className="text-sm text-ink/60 flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-amber-dark/30 border-t-amber-dark rounded-full animate-spin" />
+                Generating your questions…
+              </p>
             ) : questionList.length === 0 ? (
               <p className="text-sm text-ink/40 italic">No questions available.</p>
             ) : (
