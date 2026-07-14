@@ -58,11 +58,26 @@ export default function UploadZone({ onSubmit, isLoading }) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div role="tablist" aria-label="Job description input method" className="flex gap-2 mb-4">
+      <div 
+        role="tablist" 
+        aria-label="Job description input method" 
+        className="flex gap-2 mb-4"
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+            const newMode = mode === "paste" ? "file" : "paste";
+            setMode(newMode);
+            // Small delay to allow React to render the new tabIndex before focusing
+            setTimeout(() => {
+              e.currentTarget.querySelector(`button[aria-selected="true"]`)?.focus();
+            }, 0);
+          }
+        }}
+      >
         <button
           type="button"
           role="tab"
           aria-selected={mode === "paste"}
+          tabIndex={mode === "paste" ? 0 : -1}
           onClick={() => setMode("paste")}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus-ring ${
             mode === "paste"
@@ -76,6 +91,7 @@ export default function UploadZone({ onSubmit, isLoading }) {
           type="button"
           role="tab"
           aria-selected={mode === "file"}
+          tabIndex={mode === "file" ? 0 : -1}
           onClick={() => setMode("file")}
           className={`px-4 py-2 rounded-full text-sm font-medium transition-colors focus-ring ${
             mode === "file"

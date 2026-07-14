@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
@@ -24,9 +24,17 @@ export default function MockInterviewPage() {
   const [session] = useState(() => loadSession());
   const [index, setIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+  const questionHeadingRef = useRef(null);
 
   const allQuestions = useMemo(() => flattenQuestions(session?.questions), [session]);
   const current = allQuestions[index];
+
+  // Move focus to the new question when index changes
+  useEffect(() => {
+    if (current && questionHeadingRef.current) {
+      questionHeadingRef.current.focus();
+    }
+  }, [index, current]);
 
   function goNext() {
     if (index < allQuestions.length - 1) {
@@ -88,7 +96,11 @@ export default function MockInterviewPage() {
                     <span className="inline-block text-xs font-semibold uppercase tracking-wide text-amber-dark mb-3">
                       {current.category}
                     </span>
-                    <p className="text-lg text-ink leading-relaxed font-medium">
+                    <p 
+                      ref={questionHeadingRef}
+                      tabIndex={-1}
+                      className="text-lg text-ink leading-relaxed font-medium focus:outline-none"
+                    >
                       {current.question}
                     </p>
                   </div>
