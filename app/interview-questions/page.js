@@ -25,7 +25,6 @@ export default function InterviewQuestionsPage() {
     if (session?.extractedJob && !session?.questions) {
       generateQuestions(session);
     }
-    // Only run the auto-generate check once, against the session loaded on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -77,7 +76,7 @@ export default function InterviewQuestionsPage() {
             </h1>
             <Link
               href="/"
-              className="inline-flex rounded-full bg-amber-dark px-6 py-2.5 text-sm font-semibold text-paper hover:bg-amber transition-colors focus-ring"
+              className="inline-flex rounded-xl bg-blue px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer"
             >
               Go to home page
             </Link>
@@ -102,9 +101,9 @@ export default function InterviewQuestionsPage() {
               Personalized questions based on your job description
             </p>
 
-            <div 
-              role="tablist" 
-              aria-label="Question category" 
+            <div
+              role="tablist"
+              aria-label="Question category"
               className="flex gap-2 mb-6 overflow-x-auto p-1"
               onKeyDown={(e) => {
                 const tabs = CATEGORIES.map(cat => cat.key);
@@ -127,9 +126,9 @@ export default function InterviewQuestionsPage() {
                   aria-selected={activeCategory === cat.key}
                   tabIndex={activeCategory === cat.key ? 0 : -1}
                   onClick={() => setActiveCategory(cat.key)}
-                  className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors focus-ring ${
+                  className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-colors focus-ring cursor-pointer ${
                     activeCategory === cat.key
-                      ? "bg-ink text-paper"
+                      ? "bg-blue text-white hover:bg-blue-light"
                       : "bg-paper-alt text-ink/60 hover:text-ink"
                   }`}
                 >
@@ -140,8 +139,8 @@ export default function InterviewQuestionsPage() {
 
             {error && (
               <p role="alert" className="mb-4 text-sm text-error font-medium bg-red-50 p-2 rounded-lg border border-red-100 flex items-center gap-2">
-                 <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                <svg className="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                 </svg>
                 {error}
               </p>
@@ -153,7 +152,7 @@ export default function InterviewQuestionsPage() {
 
             {isGenerating ? (
               <p className="text-sm text-ink/60 flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-amber-dark/30 border-t-amber-dark rounded-full animate-spin" />
+                <span className="w-4 h-4 border-2 border-blue/30 border-t-blue rounded-full animate-spin" />
                 Generating your questions…
               </p>
             ) : questionList.length === 0 ? (
@@ -166,7 +165,7 @@ export default function InterviewQuestionsPage() {
                     className="rounded-xl border border-line bg-white p-5"
                   >
                     <p className="text-sm font-medium text-ink mb-1">
-                      <span className="text-amber-dark mr-2">{i + 1}.</span>
+                      <span className="text-blue mr-2">{i + 1}.</span>
                       {q.question}
                     </p>
                   </li>
@@ -178,20 +177,20 @@ export default function InterviewQuestionsPage() {
               <button
                 onClick={handleCopyAll}
                 disabled={questionList.length === 0}
-                className="rounded-full border border-ink/15 px-5 py-2.5 text-sm font-medium text-ink hover:bg-paper-alt transition-colors focus-ring disabled:opacity-50"
+                className="rounded-xl bg-blue px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {copyLabel}
               </button>
               <button
                 onClick={() => generateQuestions(session)}
                 disabled={isGenerating}
-                className="rounded-full border border-ink/15 px-5 py-2.5 text-sm font-medium text-ink hover:bg-paper-alt transition-colors focus-ring disabled:opacity-50"
+                className="rounded-xl bg-blue px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isGenerating ? "Generating…" : "Generate New Questions"}
               </button>
               <button
                 onClick={() => router.push("/mock-interview")}
-                className="rounded-full bg-amber-dark px-5 py-2.5 text-sm font-semibold text-paper hover:bg-amber transition-colors focus-ring"
+                className="rounded-xl bg-blue px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer"
               >
                 Start Mock Interview
               </button>

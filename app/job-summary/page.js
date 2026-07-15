@@ -26,7 +26,7 @@ export default function JobSummaryPage() {
             </p>
             <Link
               href="/"
-              className="inline-flex rounded-full bg-amber-dark px-6 py-2.5 text-sm font-semibold text-paper hover:bg-amber transition-colors focus-ring"
+              className="inline-flex rounded-xl bg-blue px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer"
             >
               Go to home page
             </Link>
@@ -83,13 +83,13 @@ export default function JobSummaryPage() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={() => router.push("/interview-questions")}
-                    className="rounded-full bg-amber-dark px-6 py-2.5 text-sm font-semibold text-paper hover:bg-amber transition-colors focus-ring"
+                    className="rounded-xl bg-blue px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer"
                   >
                     View Interview Questions
                   </button>
                   <button
                     onClick={() => router.push("/mock-interview")}
-                    className="rounded-full border border-ink/15 px-6 py-2.5 text-sm font-semibold text-ink hover:bg-paper-alt transition-colors focus-ring"
+                    className="rounded-xl bg-blue px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer"
                   >
                     Start Mock Interview
                   </button>

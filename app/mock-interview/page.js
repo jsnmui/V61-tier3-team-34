@@ -29,7 +29,6 @@ export default function MockInterviewPage() {
   const allQuestions = useMemo(() => flattenQuestions(session?.questions), [session]);
   const current = allQuestions[index];
 
-  // Move focus to the new question when index changes
   useEffect(() => {
     if (current && questionHeadingRef.current) {
       questionHeadingRef.current.focus();
@@ -64,7 +63,7 @@ export default function MockInterviewPage() {
             </p>
             <Link
               href="/interview-questions"
-              className="inline-flex rounded-full bg-amber-dark px-6 py-2.5 text-sm font-semibold text-paper hover:bg-amber transition-colors focus-ring"
+              className="inline-flex rounded-xl bg-blue px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer"
             >
               Go to Interview Questions
             </Link>
@@ -93,10 +92,10 @@ export default function MockInterviewPage() {
               <div className="grid md:grid-cols-[1fr_240px] gap-6">
                 <div>
                   <div className="rounded-xl border border-line bg-white p-6 mb-4">
-                    <span className="inline-block text-xs font-semibold uppercase tracking-wide text-amber-dark mb-3">
+                    <span className="inline-block text-xs font-semibold uppercase tracking-wide text-blue mb-3">
                       {current.category}
                     </span>
-                    <p 
+                    <p
                       ref={questionHeadingRef}
                       tabIndex={-1}
                       className="text-lg text-ink leading-relaxed font-medium focus:outline-none"
@@ -108,7 +107,7 @@ export default function MockInterviewPage() {
                   <button
                     onClick={() => setShowAnswer((v) => !v)}
                     aria-expanded={showAnswer}
-                    className="rounded-full bg-amber-dark px-6 py-2.5 text-sm font-semibold text-paper hover:bg-amber transition-colors focus-ring mb-4"
+                    className="rounded-xl bg-blue px-6 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer mb-4"
                   >
                     {showAnswer ? "Hide Answer" : "Show Answer"}
                   </button>
@@ -128,20 +127,20 @@ export default function MockInterviewPage() {
                     <button
                       onClick={goPrevious}
                       disabled={index === 0}
-                      className="rounded-full border border-ink/15 px-5 py-2.5 text-sm font-medium text-ink hover:bg-paper-alt transition-colors focus-ring disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="rounded-xl bg-blue px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Previous
                     </button>
                     <button
                       onClick={goNext}
                       disabled={index === allQuestions.length - 1}
-                      className="rounded-full border border-ink/15 px-5 py-2.5 text-sm font-medium text-ink hover:bg-paper-alt transition-colors focus-ring disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="rounded-xl bg-blue px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Next
                     </button>
                     <Link
                       href="/"
-                      className="ml-auto rounded-full px-5 py-2.5 text-sm font-medium text-ink/60 hover:text-ink transition-colors focus-ring"
+                      className="ml-auto rounded-xl bg-blue px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-light transition-colors focus-ring cursor-pointer"
                     >
                       New Analysis
                     </Link>
@@ -158,7 +157,7 @@ export default function MockInterviewPage() {
                   <ul className="space-y-3">
                     {STAR_STEPS.map((step) => (
                       <li key={step.letter} className="flex gap-3">
-                        <span className="flex items-center justify-center w-7 h-7 shrink-0 rounded-full bg-amber-dark text-paper text-xs font-bold">
+                        <span className="flex items-center justify-center w-7 h-7 shrink-0 rounded-full bg-blue text-white text-xs font-bold">
                           {step.letter}
                         </span>
                         <div>
