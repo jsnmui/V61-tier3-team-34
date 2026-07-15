@@ -1,37 +1,81 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
+// 1. Declare references to mock spies so they can be modified dynamically
+const mockExecuteGroq = vi.fn();
+const mockParseLLMJson = vi.fn();
+const mockNormalizeQuestions = vi.fn();
+const mockGetSupabaseClient = vi.fn();
+const mockCreateCompletion = vi.fn(); // Mock completions inside the client
+
+// 2. Mock the modules using our dynamic references
 vi.mock("@/lib/groq", () => ({
-  getGroqClient: vi.fn(),
+  getGroqClient: vi.fn(() => ({
+    chat: {
+      completions: {
+        create: mockCreateCompletion,
+      },
+    },
+  })),
+  executeGroqWithRetry: async (groqCallFn, supabaseWriteFn) => {
+    // Await the spy. If the test calls mockRejectedValue (e.g. timeout), this throws immediately.
+    const mockResult = await mockExecuteGroq(); 
+    
+    // If the test set up a mocked response on mockExecuteGroq, route it through to the completions mock
+    if (mockResult && mockResult.choices) {
+      mockCreateCompletion.mockResolvedValueOnce(mockResult);
+    }
+    
+    // Execute the real parsing callback
+    const result = await groqCallFn();
+    
+    // Execute database callback inside our resiliency wrapper
+    if (supabaseWriteFn) {
+      try {
+        await supabaseWriteFn(result);
+      } catch (dbError) {
+        console.warn("Mock executeGroqWithRetry caught swallowed DB write error:", dbError.message);
+      }
+    }
+    
+    return result;
+  }, 
   GROQ_MODEL: "mock-model",
 }));
 
 vi.mock("@/lib/questionGeneration", () => ({
   buildQuestionGenerationPrompt: vi.fn(() => "prompt"),
-  normalizeQuestions: vi.fn((q) => q),
+  normalizeQuestions: (...args) => mockNormalizeQuestions(...args),
 }));
 
 vi.mock("@/lib/jobExtraction", () => ({
-  parseLLMJson: vi.fn(),
+  parseLLMJson: (...args) => mockParseLLMJson(...args),
 }));
 
 vi.mock("@/lib/supabase", () => ({
-  getSupabaseClient: vi.fn(),
+  getSupabaseClient: (...args) => mockGetSupabaseClient(...args),
 }));
 
+// 3. Import route ONLY after defining module mocks
 import { POST } from "../app/api/generate-questions/route";
-
-// ✅ import mocked modules ONLY as namespaces (safe access pattern)
-import * as groq from "@/lib/groq";
-import * as jobExtraction from "@/lib/jobExtraction";
-import * as supabase from "@/lib/supabase";
-
-const { getGroqClient } = groq;
-const { parseLLMJson } = jobExtraction;
-const { getSupabaseClient } = supabase;
 
 describe("POST /api/generate-questions", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockExecuteGroq.mockReset();
+    mockParseLLMJson.mockReset();
+    mockNormalizeQuestions.mockReset();
+    mockGetSupabaseClient.mockReset();
+    mockCreateCompletion.mockReset();
+
+    // Setup safe defaults
+    mockNormalizeQuestions.mockImplementation((q) => q);
+    mockGetSupabaseClient.mockReturnValue({
+      from: () => ({
+        update: () => ({
+          eq: vi.fn().mockResolvedValue({ error: null }),
+        }),
+      }),
+    });
   });
 
   // ---------------------------------------------------------------------------
@@ -81,23 +125,22 @@ describe("POST /api/generate-questions", () => {
 
   describe("Successful generation", () => {
     it("returns generated questions", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockResolvedValue({
-              choices: [
-                {
-                  message: {
-                    content: '{"technical":[]}',
-                  },
-                },
-              ],
-            }),
+      mockExecuteGroq.mockResolvedValue({
+        choices: [
+          {
+            message: {
+              content: '{"technical":[]}',
+            },
           },
-        },
+        ],
       });
 
-      parseLLMJson.mockReturnValue({
+      mockParseLLMJson.mockReturnValue({
+        technical: [],
+      });
+
+      // Crucial: Your route file expects "questions" key to wrap technical
+      mockNormalizeQuestions.mockReturnValue({
         technical: [],
       });
 
@@ -119,25 +162,12 @@ describe("POST /api/generate-questions", () => {
     });
 
     it("returns sessionId when supplied", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockResolvedValue({
-              choices: [{ message: { content: "{}" } }],
-            }),
-          },
-        },
+      mockExecuteGroq.mockResolvedValue({
+        choices: [{ message: { content: "{}" } }],
       });
 
-      parseLLMJson.mockReturnValue({});
-
-      getSupabaseClient.mockReturnValue({
-        from: () => ({
-          update: () => ({
-            eq: vi.fn().mockResolvedValue({ error: null }),
-          }),
-        }),
-      });
+      mockParseLLMJson.mockReturnValue({});
+      mockNormalizeQuestions.mockReturnValue({});
 
       const req = {
         json: vi.fn().mockResolvedValue({
@@ -159,13 +189,7 @@ describe("POST /api/generate-questions", () => {
 
   describe("Groq failures", () => {
     it("returns 502 when Groq throws", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockRejectedValue(new Error("timeout")),
-          },
-        },
-      });
+      mockExecuteGroq.mockRejectedValue(new Error("timeout"));
 
       const req = {
         json: vi.fn().mockResolvedValue({
@@ -179,17 +203,11 @@ describe("POST /api/generate-questions", () => {
     });
 
     it("returns 502 when LLM returns malformed JSON", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockResolvedValue({
-              choices: [{ message: { content: "not json" } }],
-            }),
-          },
-        },
+      mockExecuteGroq.mockResolvedValue({
+        choices: [{ message: { content: "not json" } }],
       });
 
-      parseLLMJson.mockImplementation(() => {
+      mockParseLLMJson.mockImplementation(() => {
         throw new Error("bad json");
       });
 
@@ -211,25 +229,12 @@ describe("POST /api/generate-questions", () => {
 
   describe("Supabase persistence", () => {
     it("continues when database update succeeds", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockResolvedValue({
-              choices: [{ message: { content: "{}" } }],
-            }),
-          },
-        },
+      mockExecuteGroq.mockResolvedValue({
+        choices: [{ message: { content: "{}" } }],
       });
 
-      parseLLMJson.mockReturnValue({});
-
-      getSupabaseClient.mockReturnValue({
-        from: () => ({
-          update: () => ({
-            eq: vi.fn().mockResolvedValue({ error: null }),
-          }),
-        }),
-      });
+      mockParseLLMJson.mockReturnValue({});
+      mockNormalizeQuestions.mockReturnValue({});
 
       const req = {
         json: vi.fn().mockResolvedValue({
@@ -244,19 +249,14 @@ describe("POST /api/generate-questions", () => {
     });
 
     it("still returns 200 when Supabase update fails", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockResolvedValue({
-              choices: [{ message: { content: "{}" } }],
-            }),
-          },
-        },
+      mockExecuteGroq.mockResolvedValue({
+        choices: [{ message: { content: "{}" } }],
       });
 
-      parseLLMJson.mockReturnValue({});
+      mockParseLLMJson.mockReturnValue({});
+      mockNormalizeQuestions.mockReturnValue({});
 
-      getSupabaseClient.mockReturnValue({
+      mockGetSupabaseClient.mockReturnValue({
         from: () => ({
           update: () => ({
             eq: vi.fn().mockResolvedValue({
