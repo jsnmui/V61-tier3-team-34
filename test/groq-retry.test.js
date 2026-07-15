@@ -82,6 +82,7 @@ describe("Groq Rate-Limit & Backoff Test Suite", () => {
       expect(mockGroqCall).toHaveBeenCalledTimes(3);
       expect(mockSupabaseWrite).toHaveBeenCalledTimes(1);
       expect(mockSupabaseWrite).toHaveBeenCalledWith({ questions: ["Q1", "Q2"] });
+      expect(result).toEqual({ questions: ["Q1", "Q2"] });
     });
   });
 
