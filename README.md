@@ -170,6 +170,14 @@ The Groq free tier's tokens-per-minute limit is a hard constraint the app is bui
 
 ---
 
+## 🛡️ Reliability & Resiliency
+
+To handle Groq's free-tier limits and potential network hiccups, the backend implements a customized **Exponential Backoff with Jitter** retry framework and isolated database persistence callbacks.
+
+👉 **[Read the full AI Services Documentation](./docs/ai-services.md)** for deep-dives into rate-limiting, retry formulas, and database resilience.
+
+---
+
 ## 🧪 Testing & CI
 
 | Check | Tool | Status |

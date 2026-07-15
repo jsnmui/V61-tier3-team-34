@@ -1,34 +1,64 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "../app/api/parse/route";
 
+  import { describe, it, expect, vi, beforeEach } from "vitest";
+
+// 1. Declare dynamic references to mocks
+const mockExecuteGroq = vi.fn();
+const mockParseLLMJson = vi.fn();
+const mockNormalizeExtractedJob = vi.fn();
+const mockGetSupabaseClient = vi.fn();
+const mockCreateCompletion = vi.fn(); // <--- Add a mock for the Groq completions
+
+// 2. Define Vitest module mocks
 vi.mock("@/lib/groq", () => ({
-  getGroqClient: vi.fn(),
+  getGroqClient: vi.fn(() => ({
+    chat: {
+      completions: {
+        create: mockCreateCompletion,
+      },
+    },
+  })),
+  executeGroqWithRetry: async (groqCallFn, supabaseWriteFn) => {
+    await mockExecuteGroq();
+    const result = await groqCallFn();
+    
+    if (supabaseWriteFn) {
+      try {
+        await supabaseWriteFn(result);
+      } catch (dbError) {
+        // Resiliency safety net: Database failures on the post-execution hook 
+        // should not crash the request if we successfully parsed the job data!
+        console.warn("Mock executeGroqWithRetry caught swallowed DB write error:", dbError.message);
+      }
+    }
+    
+    return result;
+  },
   GROQ_MODEL: "mock-model",
   truncateJDText: vi.fn((text) => text),
 }));
 
 vi.mock("@/lib/jobExtraction", () => ({
   buildExtractionPrompt: vi.fn(() => "mock prompt"),
-  parseLLMJson: vi.fn(),
-  normalizeExtractedJob: vi.fn(),
+  parseLLMJson: (...args) => mockParseLLMJson(...args),
+  normalizeExtractedJob: (...args) => mockNormalizeExtractedJob(...args),
 }));
 
 vi.mock("@/lib/supabase", () => ({
-  getSupabaseClient: vi.fn(),
+  getSupabaseClient: (...args) => mockGetSupabaseClient(...args),
 }));
 
-import { getGroqClient } from "@/lib/groq";
-import {
-  parseLLMJson,
-  normalizeExtractedJob,
-} from "@/lib/jobExtraction";
-import { getSupabaseClient } from "@/lib/supabase";
+import { POST } from "../app/api/parse/route";
 
 beforeEach(() => {
-  vi.resetAllMocks();
+  vi.clearAllMocks();
+  mockExecuteGroq.mockReset();
+  mockParseLLMJson.mockReset();
+  mockNormalizeExtractedJob.mockReset();
+  mockGetSupabaseClient.mockReset();
+  mockCreateCompletion.mockReset(); // <--- Clear completion mock before each test
 
-  // safe default supabase mock (prevents accidental crashes)
-  getSupabaseClient.mockReturnValue({
+  // Setup safe defaults for Supabase
+  mockGetSupabaseClient.mockReturnValue({
     from: () => ({
       update: () => ({
         eq: vi.fn().mockResolvedValue({ error: null }),
@@ -49,18 +79,11 @@ const makeRequest = (payload) =>
     body: JSON.stringify(payload),
   });
 
+// Correctly mock the completion response so the real groqCallFn can run!
 const mockGroqSuccess = (content = '{"job_title":"Frontend Developer"}') => {
-  const create = vi.fn().mockResolvedValue({
+  mockCreateCompletion.mockResolvedValue({
     choices: [{ message: { content } }],
   });
-
-  getGroqClient.mockReturnValue({
-    chat: {
-      completions: { create },
-    },
-  });
-
-  return create;
 };
 
 /**
@@ -74,11 +97,11 @@ describe("POST /api/parse", () => {
     it("returns extracted job data for valid input", async () => {
       mockGroqSuccess();
 
-      parseLLMJson.mockReturnValue({
+      mockParseLLMJson.mockReturnValue({
         job_title: "Frontend Developer",
       });
 
-      normalizeExtractedJob.mockReturnValue({
+      mockNormalizeExtractedJob.mockReturnValue({
         job_title: "Frontend Developer",
       });
 
@@ -125,6 +148,8 @@ describe("POST /api/parse", () => {
 
     it("handles unexpected payload shape safely", async () => {
       mockGroqSuccess();
+      mockParseLLMJson.mockReturnValue({});
+      mockNormalizeExtractedJob.mockReturnValue({});
 
       const res = await POST(
         makeRequest({
@@ -141,13 +166,7 @@ describe("POST /api/parse", () => {
    */
   describe("LLM failures", () => {
     it("returns 502 when Groq throws error", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockRejectedValue(new Error("Groq down")),
-          },
-        },
-      });
+      mockExecuteGroq.mockRejectedValue(new Error("Groq down"));
 
       const res = await POST(
         makeRequest({
@@ -161,7 +180,7 @@ describe("POST /api/parse", () => {
     it("returns 502 when LLM returns invalid JSON", async () => {
       mockGroqSuccess("not-json");
 
-      parseLLMJson.mockImplementation(() => {
+      mockParseLLMJson.mockImplementation(() => {
         throw new Error("invalid json");
       });
 
@@ -177,8 +196,8 @@ describe("POST /api/parse", () => {
     it("handles LLM returning empty JSON object", async () => {
       mockGroqSuccess("{}");
 
-      parseLLMJson.mockReturnValue({});
-      normalizeExtractedJob.mockReturnValue({});
+      mockParseLLMJson.mockReturnValue({});
+      mockNormalizeExtractedJob.mockReturnValue({});
 
       const res = await POST(
         makeRequest({
@@ -190,13 +209,7 @@ describe("POST /api/parse", () => {
     });
 
     it("handles LLM timeout scenario", async () => {
-      getGroqClient.mockReturnValue({
-        chat: {
-          completions: {
-            create: vi.fn().mockRejectedValue(new Error("timeout")),
-          },
-        },
-      });
+      mockExecuteGroq.mockRejectedValue(new Error("timeout"));
 
       const res = await POST(
         makeRequest({
@@ -215,14 +228,14 @@ describe("POST /api/parse", () => {
     it("updates Supabase when sessionId exists", async () => {
       mockGroqSuccess("{}");
 
-      parseLLMJson.mockReturnValue({});
-      normalizeExtractedJob.mockReturnValue({ job_title: "Dev" });
+      mockParseLLMJson.mockReturnValue({});
+      mockNormalizeExtractedJob.mockReturnValue({ job_title: "Dev" });
 
       const eq = vi.fn().mockResolvedValue({ error: null });
       const update = vi.fn(() => ({ eq }));
       const from = vi.fn(() => ({ update }));
 
-      getSupabaseClient.mockReturnValue({ from });
+      mockGetSupabaseClient.mockReturnValue({ from });
 
       await POST(
         makeRequest({
@@ -239,14 +252,14 @@ describe("POST /api/parse", () => {
     it("still returns 200 when Supabase update fails", async () => {
       mockGroqSuccess("{}");
 
-      parseLLMJson.mockReturnValue({});
-      normalizeExtractedJob.mockReturnValue({});
+      mockParseLLMJson.mockReturnValue({});
+      mockNormalizeExtractedJob.mockReturnValue({});
 
       const eq = vi.fn().mockResolvedValue({
         error: new Error("DB failed"),
       });
 
-      getSupabaseClient.mockReturnValue({
+      mockGetSupabaseClient.mockReturnValue({
         from: vi.fn(() => ({
           update: vi.fn(() => ({ eq })),
         })),
@@ -269,6 +282,8 @@ describe("POST /api/parse", () => {
   describe("edge cases", () => {
     it("handles extremely large job description", async () => {
       mockGroqSuccess();
+      mockParseLLMJson.mockReturnValue({ job_title: "Developer" });
+      mockNormalizeExtractedJob.mockReturnValue({ job_title: "Developer" });
 
       const res = await POST(
         makeRequest({
@@ -280,6 +295,10 @@ describe("POST /api/parse", () => {
     });
 
     it("handles whitespace-heavy input", async () => {
+      mockGroqSuccess();
+      mockParseLLMJson.mockReturnValue({ job_title: "Developer" });
+      mockNormalizeExtractedJob.mockReturnValue({ job_title: "Developer" });
+
       const res = await POST(
         makeRequest({
           jdText: "   \n\t   valid long text here   ",
@@ -292,8 +311,8 @@ describe("POST /api/parse", () => {
     it("handles LLM returning partial JSON fields", async () => {
       mockGroqSuccess('{"job_title": ""}');
 
-      parseLLMJson.mockReturnValue({ job_title: "" });
-      normalizeExtractedJob.mockReturnValue({ job_title: "" });
+      mockParseLLMJson.mockReturnValue({ job_title: "" });
+      mockNormalizeExtractedJob.mockReturnValue({ job_title: "" });
 
       const res = await POST(
         makeRequest({

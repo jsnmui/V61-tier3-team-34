@@ -40,7 +40,7 @@ const TEAM = [
   },
   {
     name: "Vanessa Santos",
-    role: "Web Develope",
+    role: "Web Developer",
     image: "/picture-vanessa.jpg", 
     github: "https://github.com/nessa-dev",
     linkedin: "https://www.linkedin.com/in/vanessa-dev-santos/"
@@ -60,11 +60,11 @@ const TEAM = [
     linkedin: "https://www.linkedin.com/in/thanasis-koufos-software-developer/"
   },
   {
-    name: "Jason",
+    name: "Jason Mui",
     role: "Web Developer",
     image: "/picture-default.png", 
-    github: "https://github.com/",
-    linkedin: "https://linkedin.com/"
+    github: "https://github.com/jsnmui",
+    linkedin: "https://www.linkedin.com/in/jasonmui2026/"
   }
 ];
 
