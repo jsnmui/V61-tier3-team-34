@@ -197,7 +197,7 @@ export default function HomePage() {
         jdText: ingestData.jdText,
         extractedJob: parseData.extractedJob,
         questions: null,
-        quantityPerCategory: Math.ceil(quantity / 3),
+        quantityPerCategory: quantity,
       });
 
       router.push("/job-summary");
