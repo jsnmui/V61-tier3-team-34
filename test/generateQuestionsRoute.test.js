@@ -158,6 +158,8 @@ describe("POST /api/generate-questions", () => {
       expect(res.status).toBe(200);
       expect(body.questions).toEqual({
         technical: [],
+        behavioral: [],
+        experience: [],
       });
     });
 
