@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getGroqClient, GROQ_MODEL, executeGroqWithRetry } from "@/lib/groq";
 import {
-  buildQuestionGenerationPrompt,
   normalizeQuestions,
 } from "@/lib/questionGeneration";
 import { parseLLMJson } from "@/lib/jobExtraction";
